@@ -114,9 +114,6 @@ def apply_merge(
     pair_counts: dict[tuple[bytes, bytes], int],
     pair_to_words: dict[tuple[bytes, bytes], dict[tuple[bytes, ...], None]],
 ) -> set[tuple[bytes, bytes]]:
-    """
-    Apply one merge and return the set of pair keys whose counts changed.
-    """
     affected_words = list(pair_to_words.get(pair, {}).keys())
     if not affected_words:
         return set()
