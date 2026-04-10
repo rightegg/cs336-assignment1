@@ -10,11 +10,6 @@ PAT = r"""'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s
 
 
 class ReversePair:
-    """
-    Heap helper so that among equal counts, we pick the lexicographically
-    largest pair, matching:
-        max(pair_counts.items(), key=lambda x: (x[1], x[0]))
-    """
     __slots__ = ("pair",)
 
     def __init__(self, pair: tuple[bytes, bytes]):
