@@ -1,0 +1,14 @@
+{
+  "input_path": "./data/TinyStoriesV2-GPT4-valid.txt",
+  "vocab_size_requested": 10000,
+  "special_tokens": [
+    "<|endoftext|>"
+  ],
+  "actual_vocab_size": 10000,
+  "num_merges": 9743,
+  "elapsed_seconds": 23.92085300013423,
+  "peak_tracemalloc_mb": 22.076077461242676,
+  "longest_token_id": 7427,
+  "longest_token_num_bytes": 15,
+  "longest_token_repr": "b' accomplishment'"
+}

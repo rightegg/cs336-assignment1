@@ -1,0 +1,38 @@
+         2972189 function calls (2972087 primitive calls) in 23.859 seconds
+
+   Ordered by: cumulative time
+   List reduced from 444 to 30 due to restriction <30>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    3.607    3.607   23.859   23.859 C:\Users\FangR\Documents\cs336-assignment1\cs336_basics\train_bpe.py:190(train_bpe)
+     9743    7.189    0.001   13.476    0.001 C:\Users\FangR\Documents\cs336-assignment1\cs336_basics\train_bpe.py:116(apply_merge)
+        1    0.000    0.000    4.728    4.728 C:\Users\FangR\anaconda3\Lib\multiprocessing\pool.py:738(__exit__)
+        1    0.000    0.000    4.700    4.700 C:\Users\FangR\anaconda3\Lib\multiprocessing\pool.py:654(terminate)
+        5    0.000    0.000    4.671    0.934 C:\Users\FangR\anaconda3\Lib\multiprocessing\util.py:197(__call__)
+        1    0.000    0.000    4.671    4.671 C:\Users\FangR\anaconda3\Lib\multiprocessing\pool.py:680(_terminate_pool)
+        5    0.000    0.000    4.665    0.933 C:\Users\FangR\anaconda3\Lib\multiprocessing\queues.py:389(put)
+        5    0.001    0.000    4.664    0.933 C:\Users\FangR\anaconda3\Lib\multiprocessing\connection.py:182(send_bytes)
+       13    0.000    0.000    4.664    0.359 C:\Users\FangR\anaconda3\Lib\multiprocessing\connection.py:284(_send_bytes)
+       13    0.001    0.000    4.663    0.359 {built-in method _winapi.WriteFile}
+      3/1    0.000    0.000    4.663    4.663 C:\Users\FangR\anaconda3\Lib\threading.py:1000(_bootstrap)
+      3/1    0.000    0.000    4.663    4.663 C:\Users\FangR\anaconda3\Lib\threading.py:1027(_bootstrap_inner)
+      3/1    0.000    0.000    4.662    4.662 C:\Users\FangR\anaconda3\Lib\threading.py:983(run)
+        1    0.000    0.000    4.661    4.661 C:\Users\FangR\anaconda3\Lib\multiprocessing\pool.py:671(_help_stuff_finish)
+        1    0.000    0.000    4.661    4.661 {method 'acquire' of '_multiprocessing.SemLock' objects}
+        1    0.000    0.000    4.661    4.661 C:\Users\FangR\anaconda3\Lib\multiprocessing\pool.py:527(_handle_tasks)
+        1    0.000    0.000    4.659    4.659 C:\Users\FangR\anaconda3\Lib\multiprocessing\pool.py:369(starmap)
+        1    0.000    0.000    4.659    4.659 C:\Users\FangR\anaconda3\Lib\multiprocessing\pool.py:767(get)
+        3    0.000    0.000    4.637    1.546 C:\Users\FangR\anaconda3\Lib\multiprocessing\pool.py:500(_wait_for_updates)
+        3    0.000    0.000    4.634    1.545 C:\Users\FangR\anaconda3\Lib\multiprocessing\pool.py:333(_maintain_pool)
+        7    0.000    0.000    4.609    0.658 C:\Users\FangR\anaconda3\Lib\multiprocessing\connection.py:1010(_exhaustive_wait)
+   507261    2.206    0.000    2.206    0.000 {method 'add' of 'set' objects}
+    68766    1.065    0.000    1.618    0.000 C:\Users\FangR\Documents\cs336-assignment1\cs336_basics\train_bpe.py:97(merge_pair_in_word)
+     9743    0.447    0.000    1.484    0.000 C:\Users\FangR\Documents\cs336-assignment1\cs336_basics\train_bpe.py:167(get_best_pair)
+   288151    1.020    0.000    1.020    0.000 {method 'pop' of 'dict' objects}
+    74310    0.790    0.000    0.906    0.000 {built-in method _heapq.heappop}
+   150643    0.754    0.000    0.782    0.000 C:\Users\FangR\Documents\cs336-assignment1\cs336_basics\train_bpe.py:93(get_pairs)
+   221637    0.686    0.000    0.686    0.000 {method 'get' of 'dict' objects}
+   297839    0.511    0.000    0.511    0.000 {method 'append' of 'list' objects}
+    90412    0.424    0.000    0.429    0.000 {built-in method _heapq.heappush}
+
+

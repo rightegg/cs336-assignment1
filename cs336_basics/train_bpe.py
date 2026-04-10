@@ -2,10 +2,26 @@ import os
 from collections import defaultdict
 from multiprocessing import Pool
 from typing import BinaryIO
+import heapq
 
 import regex as re
 
 PAT = r"""'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+"""
+
+
+class ReversePair:
+    """
+    Heap helper so that among equal counts, we pick the lexicographically
+    largest pair, matching:
+        max(pair_counts.items(), key=lambda x: (x[1], x[0]))
+    """
+    __slots__ = ("pair",)
+
+    def __init__(self, pair: tuple[bytes, bytes]):
+        self.pair = pair
+
+    def __lt__(self, other: "ReversePair") -> bool:
+        return self.pair > other.pair
 
 
 def find_chunk_boundaries(
@@ -102,11 +118,15 @@ def apply_merge(
     word_counts: dict[tuple[bytes, ...], int],
     pair_counts: dict[tuple[bytes, bytes], int],
     pair_to_words: dict[tuple[bytes, bytes], dict[tuple[bytes, ...], None]],
-) -> None:
+) -> set[tuple[bytes, bytes]]:
+    """
+    Apply one merge and return the set of pair keys whose counts changed.
+    """
     affected_words = list(pair_to_words.get(pair, {}).keys())
     if not affected_words:
-        return
+        return set()
 
+    changed_pairs: set[tuple[bytes, bytes]] = set()
     new_word_additions: dict[tuple[bytes, ...], int] = defaultdict(int)
 
     for word in affected_words:
@@ -119,6 +139,7 @@ def apply_merge(
         for p in old_pairs:
             pair_counts[p] -= freq
             pair_to_words[p].pop(word, None)
+            changed_pairs.add(p)
 
             if pair_counts[p] == 0:
                 del pair_counts[p]
@@ -138,6 +159,32 @@ def apply_merge(
         for p in get_pairs(new_word):
             pair_counts[p] += added_freq
             pair_to_words[p][new_word] = None
+            changed_pairs.add(p)
+
+    return changed_pairs
+
+
+def get_best_pair(
+    heap: list[tuple[int, ReversePair, tuple[bytes, bytes]]],
+    pair_counts: dict[tuple[bytes, bytes], int],
+) -> tuple[bytes, bytes] | None:
+    """
+    Pop stale heap entries until we find one whose stored count matches the
+    current cached count.
+    """
+    while heap:
+        neg_count, _, pair = heapq.heappop(heap)
+        count = -neg_count
+        current = pair_counts.get(pair, 0)
+
+        if current == 0:
+            continue
+        if current != count:
+            continue
+
+        return pair
+
+    return None
 
 
 def train_bpe(
@@ -186,16 +233,26 @@ def train_bpe(
     if num_merges < 0:
         raise ValueError("vocab_size is smaller than initial vocab size")
 
+    heap: list[tuple[int, ReversePair, tuple[bytes, bytes]]] = []
+    for pair, count in pair_counts.items():
+        heapq.heappush(heap, (-count, ReversePair(pair), pair))
+
     for _ in range(num_merges):
         if not pair_counts:
             break
 
-        best_pair = max(pair_counts.items(), key=lambda x: (x[1], x[0]))[0]
-        merges.append(best_pair)
+        best_pair = get_best_pair(heap, pair_counts)
+        if best_pair is None:
+            break
 
+        merges.append(best_pair)
         vocab[next_id] = best_pair[0] + best_pair[1]
         next_id += 1
 
-        apply_merge(best_pair, pretoken_counts, pair_counts, pair_to_words)
+        changed_pairs = apply_merge(best_pair, pretoken_counts, pair_counts, pair_to_words)
+
+        for pair in changed_pairs:
+            if pair in pair_counts:
+                heapq.heappush(heap, (-pair_counts[pair], ReversePair(pair), pair))
 
     return vocab, merges
